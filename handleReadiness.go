@@ -13,7 +13,6 @@ func handleReadiness() http.HandlerFunc {
 
 func handleError() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
 		responsdWithError(w, 500, "Internal Server Error")
 	}
 }

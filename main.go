@@ -54,6 +54,8 @@ func main() {
 	// users endpoints
 	v1Router.Get("/users", dbConfig.middlewareAuth(dbConfig.GetUser))
 	v1Router.Post("/users", createUser(dbConfig.DB))
+	// feeds endpoints
+	v1Router.Get("/feeds", getAllFeeds(dbConfig.DB))
 	v1Router.Post("/feeds", dbConfig.middlewareAuth(dbConfig.createFeeds))
 	router.Mount("/v1", v1Router)
 

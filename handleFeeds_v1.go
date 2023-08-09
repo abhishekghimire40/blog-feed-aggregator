@@ -41,3 +41,13 @@ func (cfg *apiConfig) createFeeds(w http.ResponseWriter, r *http.Request, user d
 	}
 	respondWithJSON(w, 201, feed)
 }
+
+func getAllFeeds(db *database.Queries) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		feeds, err := db.GetFeeds(r.Context())
+		if err != nil {
+			responsdWithError(w, 404, "Invalid request")
+		}
+		respondWithJSON(w, 200, feeds)
+	}
+}

@@ -57,6 +57,11 @@ func main() {
 	// feeds endpoints
 	v1Router.Get("/feeds", getAllFeeds(dbConfig.DB))
 	v1Router.Post("/feeds", dbConfig.middlewareAuth(dbConfig.createFeeds))
+	// feed follows endpoints
+	v1Router.Post("/feed_follows", dbConfig.middlewareAuth(dbConfig.createFeedFollows))
+	v1Router.Delete("/feed_follows/{feedFollowID}", dbConfig.middlewareAuth(dbConfig.deleteFeedFollow))
+	v1Router.Get("/feed_follows", dbConfig.middlewareAuth(dbConfig.getFeedFollows))
+	// moun v1Router to our main router
 	router.Mount("/v1", v1Router)
 
 	// starting the server and serving at port

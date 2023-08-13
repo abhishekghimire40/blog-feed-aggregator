@@ -19,12 +19,12 @@ RETURNING id, created_at, updated_at, name, url, user_id
 `
 
 type CreateFeedsParams struct {
-	ID        uuid.UUID
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Name      string
-	Url       string
-	UserID    uuid.UUID
+	ID        uuid.UUID `json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	Name      string    `json:"name"`
+	Url       string    `json:"url"`
+	UserID    uuid.UUID `json:"user_id"`
 }
 
 func (q *Queries) CreateFeeds(ctx context.Context, arg CreateFeedsParams) (Feed, error) {
@@ -80,4 +80,22 @@ func (q *Queries) GetFeeds(ctx context.Context) ([]Feed, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const getSingleFeed = `-- name: GetSingleFeed :one
+SELECT id, created_at, updated_at, name, url, user_id FROM feeds WHERE id=$1
+`
+
+func (q *Queries) GetSingleFeed(ctx context.Context, id uuid.UUID) (Feed, error) {
+	row := q.db.QueryRowContext(ctx, getSingleFeed, id)
+	var i Feed
+	err := row.Scan(
+		&i.ID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Name,
+		&i.Url,
+		&i.UserID,
+	)
+	return i, err
 }

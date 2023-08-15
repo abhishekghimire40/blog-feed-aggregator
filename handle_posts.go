@@ -29,5 +29,5 @@ func (cfg *apiConfig) GetPosts(w http.ResponseWriter, r *http.Request, user data
 		responsdWithError(w, 400, "Couldn't get posts")
 		return
 	}
-	respondWithJSON(w, 200, posts)
+	respondWithJSON(w, 200, databasePostToPosts(posts))
 }

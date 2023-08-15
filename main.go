@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/abhishekghimire40/blog-feed-aggregator/internal/database"
 	"github.com/go-chi/chi/v5"
@@ -25,17 +26,18 @@ func main() {
 	port := os.Getenv("PORT")
 	dbURL := os.Getenv("DB_URL")
 
-	db, err := sql.Open("postgres", dbURL)
+	conn, err := sql.Open("postgres", dbURL)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	dbQueries := database.New(db)
+	db := database.New(conn)
 
 	dbConfig := apiConfig{
-		DB: dbQueries,
+		DB: db,
 	}
 
+	go startScraping(dbConfig.DB, 10, time.Minute)
 	// main router
 	router := chi.NewRouter()
 	router.Use(cors.Handler(cors.Options{

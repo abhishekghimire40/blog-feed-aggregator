@@ -37,7 +37,7 @@ func main() {
 		DB: db,
 	}
 
-	go startScraping(dbConfig.DB, 10, time.Minute)
+	go startScraping(dbConfig.DB, 10, time.Hour)
 	// main router
 	router := chi.NewRouter()
 	router.Use(cors.Handler(cors.Options{
@@ -63,6 +63,9 @@ func main() {
 	v1Router.Post("/feed_follows", dbConfig.middlewareAuth(dbConfig.createFeedFollows))
 	v1Router.Delete("/feed_follows/{feedFollowID}", dbConfig.middlewareAuth(dbConfig.deleteFeedFollow))
 	v1Router.Get("/feed_follows", dbConfig.middlewareAuth(dbConfig.getFeedFollows))
+
+	//  posts endpoints
+	v1Router.Get("/posts", dbConfig.middlewareAuth(dbConfig.GetPosts))
 	// moun v1Router to our main router
 	router.Mount("/v1", v1Router)
 

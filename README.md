@@ -67,10 +67,10 @@ Follow these steps to get your development environment up and running.
 
 Before running the API, make sure to set up the required configuration. You can either use environment variables or create a .env file in the root directory and populate it with the necessary values. An example .env file might look like this(i used postgres as the database):
 
-<pre>.env
+```env
     PORT=8080
     DATABASE_URL=postgres://username:password@host:port/databasename?sslmode=disable
-</pre>
+```
 
 ## API Endpoints
 
